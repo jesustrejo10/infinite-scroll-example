@@ -1,19 +1,12 @@
 package com.jesustrejo10.infinitescrollexample
 
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
+import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
+import android.support.v7.app.AppCompatActivity
+import android.view.*
 import kotlinx.android.synthetic.main.activity_tab.*
 import kotlinx.android.synthetic.main.fragment_tab.view.*
 
@@ -40,14 +33,40 @@ class TabActivity : AppCompatActivity() {
 
 		// Set up the ViewPager with the sections adapter.
 		container.adapter = mSectionsPagerAdapter
-
-		fab.setOnClickListener { view ->
-			Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show()
-		}
+		configureTabLayout()
 
 	}
 
+
+	private fun configureTabLayout() {
+
+		tabLayout.addTab(tabLayout.newTab().setText("Tab 1 Item"))
+		tabLayout.addTab(tabLayout.newTab().setText("Tab 2 Item"))
+		tabLayout.addTab(tabLayout.newTab().setText("Tab 3 Item"))
+		tabLayout.addTab(tabLayout.newTab().setText("Tab 4 Item"))
+
+		val adapter = TabPagerAdapter(supportFragmentManager,
+			tabLayout.tabCount)
+		container.adapter = adapter
+
+		container.addOnPageChangeListener(
+			TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+		tabLayout.addOnTabSelectedListener(object :
+			TabLayout.OnTabSelectedListener {
+			override fun onTabSelected(tab: TabLayout.Tab) {
+				container.currentItem = tab.position
+			}
+
+			override fun onTabUnselected(tab: TabLayout.Tab) {
+
+			}
+
+			override fun onTabReselected(tab: TabLayout.Tab) {
+
+			}
+
+		})
+	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		// Inflate the menu; this adds items to the action bar if it is present.
