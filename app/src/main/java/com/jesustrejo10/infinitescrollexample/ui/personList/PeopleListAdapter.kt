@@ -1,11 +1,15 @@
 package com.jesustrejo10.infinitescrollexample.ui.personList
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.jesustrejo10.infinitescrollexample.R
 import com.jesustrejo10.infinitescrollexample.model.Person
+import com.squareup.picasso.Picasso
 
 /**
  * @author Jesus Trejo on 4/21/19.
@@ -20,9 +24,8 @@ class PeopleListAdapter(var info : ArrayList<Person>) : RecyclerView.Adapter<Peo
 	}
 
 	override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-
-
-
+		val personToShow = info[p1]
+		p0.showInfo(personToShow)
 	}
 
 	override fun getItemCount(): Int {
@@ -32,8 +35,21 @@ class PeopleListAdapter(var info : ArrayList<Person>) : RecyclerView.Adapter<Peo
 
 	open class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) , View.OnClickListener {
 
+		private var personImage : ImageView = itemView.findViewById(R.id.personImage)
+		private var personName : TextView = itemView.findViewById(R.id.personNameTextView)
+		private var personLocation : TextView = itemView.findViewById(R.id.personLocation)
+
+
 		override fun onClick(p0: View?) {
 			TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		}
+
+		fun showInfo(personToShow: Person) {
+
+			Picasso.get().load(personToShow.picture.thumbnail).into(personImage)
+			personName.text = personToShow.name.name
+			val locationToShow = personToShow.location.state+", "+personToShow.location.city+", "+personToShow.location.postcode
+			personLocation.text = locationToShow
 		}
 
 	}
