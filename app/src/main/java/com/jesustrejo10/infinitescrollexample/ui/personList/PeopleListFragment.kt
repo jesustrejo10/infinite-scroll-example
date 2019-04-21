@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_person_list.*
 /**
  * @author Jesus Trejo on 4/19/19.
  */
-class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapter.OnBottomReachedListener{
+class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapter.OnBottomReachedListener {
 
 	private var firstDataEntry = true
 	private lateinit var adapter : PeopleListAdapter
@@ -32,6 +32,9 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 		super.onViewCreated(view, savedInstanceState)
 		presenter = PeopleListPresenter(this)
 		requestPeople()
+		swipeRefreshLayout.setOnRefreshListener({
+			checkIfPeopleAreInScreen()
+		})
 	}
 
 	/**
@@ -47,9 +50,6 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 			adapter.setOnBottomReachedListener(this)
 			board_topic_list.adapter = adapter
 
-			swipeRefreshLayout.setOnRefreshListener({
-				checkIfPeopleAreInScreen()
-			})
 		}else{
 			adapter.notifyDataSetChanged()
 		}
@@ -62,12 +62,16 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 * If he doesn't got the people on the first try, he can try again using that gesture.
 	 */
 	private fun checkIfPeopleAreInScreen() {
-		if(adapter.info.isEmpty()){
-			presenter.getPeople()
-		}else{
-			if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
-				swipeRefreshLayout.isRefreshing = false
+		try {
+			if (adapter.info.isEmpty()) {
+				presenter.getPeople()
+			} else {
+				if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+					swipeRefreshLayout.isRefreshing = false
+				}
 			}
+		}catch (e:UninitializedPropertyAccessException){
+			presenter.getPeople()
 		}
 	}
 
