@@ -9,4 +9,5 @@
     <string name="queues">My queues</string>
     <string name="profile">profile</string>
     <string name="people_near">Personas cerca de mi</string>
+    <string name="error_getting_people">Error obteniendo las personas, intente nuevamente.</string>
 </resources>

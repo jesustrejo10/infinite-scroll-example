@@ -1,13 +1,12 @@
 package com.jesustrejo10.infinitescrollexample.ui.personList
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jesustrejo10.infinitescrollexample.EndlessRecyclerOnScrollListener
+import android.widget.Toast
 import com.jesustrejo10.infinitescrollexample.R
 import com.jesustrejo10.infinitescrollexample.model.Person
 import io.reactivex.Scheduler
@@ -22,6 +21,18 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 
 	private var firstDataEntry = true
 	private lateinit var adapter : PeopleListAdapter
+	private lateinit var presenter : PeopleListContract.Presenter
+
+
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		return inflater.inflate(R.layout.fragment_person_list, container, false)
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		presenter = PeopleListPresenter(this)
+		requestPeople()
+	}
 
 	/**
 	 * This method send to the View the list with the people that should be showed in the view
@@ -37,14 +48,7 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 			board_topic_list.adapter = adapter
 
 			swipeRefreshLayout.setOnRefreshListener({
-				// do something
-
-				// after refresh is done, remember to call the following code
-
-				if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
-					swipeRefreshLayout.setRefreshing(false)  // This hides the spinner
-				}
-
+				checkIfPeopleAreInScreen()
 			})
 		}else{
 			adapter.notifyDataSetChanged()
@@ -54,12 +58,24 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	}
 
 	/**
+	 * This method manage the event if the user pull to refresh the screen,
+	 * If he doesn't got the people on the first try, he can try again using that gesture.
+	 */
+	private fun checkIfPeopleAreInScreen() {
+		if(adapter.info.isEmpty()){
+			presenter.getPeople()
+		}else{
+			if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+				swipeRefreshLayout.isRefreshing = false
+			}
+		}
+	}
+
+	/**
 	 * This method show an error in the entire view.
 	 */
 	override fun showEmptyErrorMessage() {
 		swipeRefreshLayout.isRefreshing=false
-
-		println("holamundo")
 	}
 
 	/**
@@ -67,22 +83,7 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 */
 	override fun showErrorMessage() {
 		swipeRefreshLayout.isRefreshing=false
-
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
-
-	private lateinit var mScrollListener : EndlessRecyclerOnScrollListener
-	private lateinit var presenter : PeopleListContract.Presenter
-
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		val rootView = inflater.inflate(R.layout.fragment_person_list, container, false)
-		return rootView
-	}
-
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-		presenter = PeopleListPresenter(this)
-		requestPeople()
+		Toast.makeText(context,R.string.error_getting_people,Toast.LENGTH_LONG).show()
 	}
 
 	/**
@@ -100,7 +101,9 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 		return AndroidSchedulers.mainThread()
 	}
 
-
+	/**
+	 * This method request to the presenter to get the people from the API
+	 */
 	private fun requestPeople() {
 		presenter.getPeople()
 	}
