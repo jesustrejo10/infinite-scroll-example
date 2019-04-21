@@ -1,6 +1,5 @@
 package com.jesustrejo10.infinitescrollexample.ui.personList
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,22 +15,28 @@ import com.squareup.picasso.Picasso
  */
 class PeopleListAdapter(var info : ArrayList<Person>) : RecyclerView.Adapter<PeopleListAdapter.ViewHolder>() {
 
-
+	private lateinit var bottomListener : OnBottomReachedListener
 
 	override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
 		val view = LayoutInflater.from(p0.context).inflate(R.layout.recyclerview_row, p0, false)
 		return ViewHolder(view)
 	}
 
-	override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-		val personToShow = info[p1]
-		p0.showInfo(personToShow)
+	override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+		val personToShow = info[position]
+		viewHolder.showInfo(personToShow)
+
+		if(position == info.size-1)
+			bottomListener.onBottomReached()
 	}
 
 	override fun getItemCount(): Int {
 		return info.size
 	}
 
+	fun setOnBottomReachedListener(listener : OnBottomReachedListener){
+		this.bottomListener = listener
+	}
 
 	open class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) , View.OnClickListener {
 
@@ -51,6 +56,15 @@ class PeopleListAdapter(var info : ArrayList<Person>) : RecyclerView.Adapter<Peo
 			val locationToShow = personToShow.location.state+", "+personToShow.location.city+", "+personToShow.location.postcode
 			personLocation.text = locationToShow
 		}
+
+	}
+
+	interface OnBottomReachedListener{
+
+		/**
+		 * This function is triggered when the user reach the bottom of the screen.
+		 */
+		fun onBottomReached()
 
 	}
 
