@@ -66,6 +66,8 @@ class TabActivity : AppCompatActivity() {
 			}
 
 		})
+
+		tabLayout.getTabAt(0)!!.setIcon(R.drawable.ic_launcher_background);
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
