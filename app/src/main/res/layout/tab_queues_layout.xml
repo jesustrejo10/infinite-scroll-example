@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/queues"
+        tools:ignore="ContentDescription"
+        android:tint="@color/small_text_color"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/queues"
+        android:textAllCaps="true"
+        android:textColor="@color/small_text_color"
+        android:textSize="10sp"
+        tools:ignore="SmallSp" />
+
+</LinearLayout>

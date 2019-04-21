@@ -41,10 +41,11 @@ class TabActivity : AppCompatActivity() {
 
 	private fun configureTabLayout() {
 
-		tabLayout.addTab(tabLayout.newTab().setText("Tab 1 Item"))
-		tabLayout.addTab(tabLayout.newTab().setText("Tab 2 Item"))
-		tabLayout.addTab(tabLayout.newTab().setText("Tab 3 Item"))
-		tabLayout.addTab(tabLayout.newTab().setText("Tab 4 Item"))
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.tab_home_layout))
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.tab_explore_layout))
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.tab_queues_layout))
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.tab_profile_layout))
+
 
 		val adapter = TabPagerAdapter(supportFragmentManager,
 			tabLayout.tabCount)
@@ -56,6 +57,7 @@ class TabActivity : AppCompatActivity() {
 			TabLayout.OnTabSelectedListener {
 			override fun onTabSelected(tab: TabLayout.Tab) {
 				container.currentItem = tab.position
+
 			}
 
 			override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -68,7 +70,7 @@ class TabActivity : AppCompatActivity() {
 
 		})
 
-		tabLayout.getTabAt(0)!!.setIcon(R.drawable.ic_launcher_background)
+		tabLayout.getTabAt(0)!!.setIcon(R.drawable.home)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {

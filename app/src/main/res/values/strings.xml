@@ -4,4 +4,8 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="people_near_you">Personas cerca de ti</string>
+    <string name="home">Home</string>
+    <string name="explore">Explore</string>
+    <string name="queues">My queues</string>
+    <string name="profile">profile</string>
 </resources>
