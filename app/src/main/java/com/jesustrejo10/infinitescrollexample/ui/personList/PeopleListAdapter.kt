@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jesustrejo10.infinitescrollexample.R
+import com.jesustrejo10.infinitescrollexample.model.Person
 
 /**
  * @author Jesus Trejo on 4/21/19.
  */
-class PeopleListAdapter(var info : ArrayList<String>) : RecyclerView.Adapter<PeopleListAdapter.ViewHolder>() {
+class PeopleListAdapter(var info : ArrayList<Person>) : RecyclerView.Adapter<PeopleListAdapter.ViewHolder>() {
 
 
 
@@ -19,7 +20,9 @@ class PeopleListAdapter(var info : ArrayList<String>) : RecyclerView.Adapter<Peo
 	}
 
 	override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-		println("holmundo1")
+
+
+
 	}
 
 	override fun getItemCount(): Int {

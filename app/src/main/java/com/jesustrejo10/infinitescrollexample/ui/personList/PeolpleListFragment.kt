@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.jesustrejo10.infinitescrollexample.EndlessRecyclerOnScrollListener
 import com.jesustrejo10.infinitescrollexample.R
+import com.jesustrejo10.infinitescrollexample.model.Person
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_person_list.*
 
 
@@ -17,109 +20,12 @@ import kotlinx.android.synthetic.main.fragment_person_list.*
  */
 class PeolpleListFragment : Fragment() , PeopleListContract.View{
 
-	private lateinit var mScrollListener : EndlessRecyclerOnScrollListener
-	private lateinit var presenter : PeopleListContract.Presenter
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		val rootView = inflater.inflate(R.layout.fragment_person_list, container, false)
-		return rootView
-	}
-
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-		manageViewComponents()
-
-		presenter = PeopleListPresenter(this)
-	}
-
-	private fun manageViewComponents() {
-
-
-		val animalNames = ArrayList<String>()
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-		animalNames.add("Horse")
-		animalNames.add("Cow")
-		animalNames.add("Camel")
-		animalNames.add("Sheep")
-		animalNames.add("Goat")
-
-
-
-
-
-
-
-
-		val adapter = PeopleListAdapter(animalNames)
+	/**
+	 * This method send to the View the list with the people that should be showed in the view
+	 */
+	override fun showPeopleInList(people: ArrayList<Person>) {
+		val adapter = PeopleListAdapter(people)
 		board_topic_list.layoutManager = LinearLayoutManager(context)
 		board_topic_list.adapter = adapter
 
@@ -129,8 +35,6 @@ class PeolpleListFragment : Fragment() , PeopleListContract.View{
 				setLoading(true)
 				swipeRefreshLayout.isRefreshing=true
 				voidea()
-				println("hola")
-
 			}
 		}
 
@@ -147,10 +51,47 @@ class PeolpleListFragment : Fragment() , PeopleListContract.View{
 			}
 		})
 
-
-
-
 	}
+
+	/**
+	 * This method show an error in the entire view.
+	 */
+	override fun showEmptyErrorMessage() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+
+	/**
+	 * This method shows a Toast error message
+	 */
+	override fun showErrorMessage() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+
+	private lateinit var mScrollListener : EndlessRecyclerOnScrollListener
+	private lateinit var presenter : PeopleListContract.Presenter
+
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		val rootView = inflater.inflate(R.layout.fragment_person_list, container, false)
+		return rootView
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		presenter = PeopleListPresenter(this)
+		requestPeople()
+	}
+
+	private fun requestPeople() {
+		presenter.getPeople()
+	}
+
+	/**
+	 * This method return an instance of the main Thread of the android app.
+	 */
+	override fun getScheduler(): Scheduler {
+		return AndroidSchedulers.mainThread()
+	}
+
 
 	private fun voidea() {
 
