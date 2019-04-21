@@ -10,17 +10,15 @@ import android.view.ViewGroup
 import com.jesustrejo10.infinitescrollexample.EndlessRecyclerOnScrollListener
 import com.jesustrejo10.infinitescrollexample.R
 import kotlinx.android.synthetic.main.fragment_person_list.*
-import android.support.v4.widget.SwipeRefreshLayout
-
-
 
 
 /**
  * @author Jesus Trejo on 4/19/19.
  */
-class PersonListFragment : Fragment(){
+class PeolpleListFragment : Fragment() , PeopleListContract.View{
 
 	private lateinit var mScrollListener : EndlessRecyclerOnScrollListener
+	private lateinit var presenter : PeopleListContract.Presenter
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		val rootView = inflater.inflate(R.layout.fragment_person_list, container, false)
@@ -30,6 +28,8 @@ class PersonListFragment : Fragment(){
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		manageViewComponents()
+
+		presenter = PeopleListPresenter(this)
 	}
 
 	private fun manageViewComponents() {
@@ -119,7 +119,7 @@ class PersonListFragment : Fragment(){
 
 
 
-		val adapter = PersonListAdapter(animalNames)
+		val adapter = PeopleListAdapter(animalNames)
 		board_topic_list.layoutManager = LinearLayoutManager(context)
 		board_topic_list.adapter = adapter
 

@@ -9,7 +9,7 @@ import com.jesustrejo10.infinitescrollexample.R
 /**
  * @author Jesus Trejo on 4/21/19.
  */
-class PersonListAdapter(var info : ArrayList<String>) : RecyclerView.Adapter<PersonListAdapter.ViewHolder>() {
+class PeopleListAdapter(var info : ArrayList<String>) : RecyclerView.Adapter<PeopleListAdapter.ViewHolder>() {
 
 
 
