@@ -10,4 +10,6 @@
     <string name="profile">profile</string>
     <string name="people_near">Personas cerca de mi</string>
     <string name="error_getting_people">Error obteniendo las personas, intente nuevamente.</string>
+    <string name="no_filter_result">No fueron encontradas personas con ese nombre, intente nuevamente</string>
+    <string name="clear_search_bar">Para habilitar el scroll infinito, elimine el contenido del buscador.</string>
 </resources>

@@ -3,6 +3,8 @@ package com.jesustrejo10.infinitescrollexample.ui.personList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_person_list.*
  * @author Jesus Trejo on 4/19/19.
  */
 class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapter.OnBottomReachedListener {
+
 
 	private var firstDataEntry = true
 	private lateinit var adapter : PeopleListAdapter
@@ -35,6 +38,7 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 		swipeRefreshLayout.setOnRefreshListener({
 			checkIfPeopleAreInScreen()
 		})
+		manageSearchBar()
 	}
 
 	/**
@@ -51,9 +55,9 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 			board_topic_list.adapter = adapter
 
 		}else{
+			adapter.info=people
 			adapter.notifyDataSetChanged()
 		}
-
 
 	}
 
@@ -63,11 +67,16 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 */
 	private fun checkIfPeopleAreInScreen() {
 		try {
-			if (adapter.info.isEmpty()) {
-				presenter.getPeople()
-			} else {
-				if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
-					swipeRefreshLayout.isRefreshing = false
+			if(editTextQuery.text.isNotEmpty()){
+				editTextQuery.setText("")
+			}else{
+				if (adapter.info.isEmpty()) {
+					presenter.getPeople()
+				} else {
+					if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+						swipeRefreshLayout.isRefreshing = false
+						adapter.notifyDataSetChanged()
+					}
 				}
 			}
 		}catch (e:UninitializedPropertyAccessException){
@@ -94,8 +103,19 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 * This function is triggered when the user reach the bottom of the screen.
 	 */
 	override fun onBottomReached() {
-		swipeRefreshLayout.isRefreshing=true
-		presenter.getPeople()
+		if(editTextQuery.text.isNotEmpty()){
+			try{
+				if(adapter.info.size > 10){
+					Toast.makeText(context,R.string.clear_search_bar,Toast.LENGTH_LONG).show()
+				}
+			}catch (e: Exception){
+				e.printStackTrace()
+			}
+		}else{
+			swipeRefreshLayout.isRefreshing=true
+			presenter.getPeople()
+		}
+
 	}
 
 	/**
@@ -111,5 +131,32 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	private fun requestPeople() {
 		presenter.getPeople()
 	}
+
+
+	/**
+	 * This method will show a Toast saying than the entered filter doesn't get any response.
+	 */
+	override fun showNoFilterResult() {
+		Toast.makeText(context,R.string.no_filter_result,Toast.LENGTH_SHORT).show()
+	}
+
+	private fun manageSearchBar() {
+
+		editTextQuery.addTextChangedListener(object : TextWatcher{
+
+
+			override fun afterTextChanged(p0: Editable?) {
+			}
+
+			override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+			}
+
+			override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+				presenter.filterByText(p0.toString())
+			}
+		})
+	}
+
+
 
 }

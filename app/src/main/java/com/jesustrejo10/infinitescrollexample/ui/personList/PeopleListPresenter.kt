@@ -9,8 +9,10 @@ import com.jesustrejo10.infinitescrollexample.use_cases.GetPeopleFromServerUseCa
 class PeopleListPresenter(val view : PeopleListContract.View) : PeopleListContract.Presenter, GetPeopleFromServerUseCase.GetPeopleFromServerUseCaseContract {
 
 
+	private var hashNames = HashMap<String,Person>()
 	private var page = 1;
 	private var peopleInList = ArrayList<Person>()
+
 	/**
 	 * This function will generate an HTTP request to the server to get the people list,
 	 * Also it will concat the old list with the new ones.
@@ -19,6 +21,22 @@ class PeopleListPresenter(val view : PeopleListContract.View) : PeopleListContra
 
 		GetPeopleFromServerUseCase(page.toString(),this).invoke(view.getScheduler())
 		page++
+	}
+
+	/**
+	 * This method will get all the people that names contains the sent character.
+	 */
+	override fun filterByText(p0: String) {
+		val listResponse = ArrayList<Person>()
+		for ((key, value) in hashNames) {
+			if(key.contains(p0))
+				listResponse.add(value)
+		}
+
+		if(listResponse.isEmpty())
+			view.showNoFilterResult()
+		else
+			view.showPeopleInList(listResponse)
 	}
 
 	/**
@@ -31,6 +49,14 @@ class PeopleListPresenter(val view : PeopleListContract.View) : PeopleListContra
 			peopleInList.addAll(result)
 
 		view.showPeopleInList(peopleInList)
+		manageHashResponse()
+	}
+
+	private fun manageHashResponse() {
+		hashNames = HashMap()
+		for (person in peopleInList){
+			hashNames.put(person.name.name,person)
+		}
 	}
 
 	/**
@@ -43,5 +69,7 @@ class PeopleListPresenter(val view : PeopleListContract.View) : PeopleListContra
 		else
 			view.showErrorMessage()
 	}
+
+
 
 }

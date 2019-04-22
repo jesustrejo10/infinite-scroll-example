@@ -30,6 +30,11 @@ abstract class PeopleListContract {
 		 */
 		fun getScheduler(): Scheduler
 
+		/**
+		 * This method will show a Toast saying than the entered filter doesn't get any response.
+		 */
+		fun showNoFilterResult()
+
 
 	}
 
@@ -39,6 +44,11 @@ abstract class PeopleListContract {
 		 * Also it will concat the old list with the new ones.
 		 */
 		fun getPeople()
+
+		/**
+		 * This method will get all the people that names contains the sent character.
+		 */
+		fun filterByText(p0: String)
 
 	}
 
