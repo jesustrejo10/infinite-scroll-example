@@ -35,9 +35,16 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		presenter = PeopleListPresenter(this)
+
+	}
+
+	override fun onResume() {
+		super.onResume()
+		firstDataEntry = true
+		editTextQuery.setText("")
 		requestPeople()
 		swipeRefreshLayout.setOnRefreshListener({
-			checkIfPeopleAreInScreen()
+			managePullToRefreshAction()
 		})
 		manageSearchBar()
 	}
@@ -66,7 +73,7 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 * This method manage the event if the user pull to refresh the screen,
 	 * If he doesn't got the people on the first try, he can try again using that gesture.
 	 */
-	private fun checkIfPeopleAreInScreen() {
+	private fun managePullToRefreshAction() {
 		try {
 			if(editTextQuery.text.isNotEmpty()){
 				editTextQuery.setText("")
@@ -76,7 +83,8 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 				} else {
 					if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
 						swipeRefreshLayout.isRefreshing = false
-						adapter.notifyDataSetChanged()
+						firstDataEntry=true
+						presenter.getPeople()
 					}
 				}
 			}
@@ -169,6 +177,8 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 			}
 		})
 	}
+
+
 
 
 
