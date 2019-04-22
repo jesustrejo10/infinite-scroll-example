@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,15 +89,27 @@ class PeopleListFragment : Fragment() , PeopleListContract.View, PeopleListAdapt
 	 * This method show an error in the entire view.
 	 */
 	override fun showEmptyErrorMessage() {
-		swipeRefreshLayout.isRefreshing=false
+		try{
+			swipeRefreshLayout.isRefreshing=false
+			Toast.makeText(context,R.string.unexpected_error,Toast.LENGTH_LONG).show()
+		}catch (e:Exception){
+			e.printStackTrace()
+			Log.e("PeopleListFragment","In other tab.")
+		}
 	}
 
 	/**
 	 * This method shows a Toast error message
 	 */
 	override fun showErrorMessage() {
-		swipeRefreshLayout.isRefreshing=false
-		Toast.makeText(context,R.string.error_getting_people,Toast.LENGTH_LONG).show()
+		try{
+			swipeRefreshLayout.isRefreshing=false
+			Toast.makeText(context,R.string.error_getting_people,Toast.LENGTH_LONG).show()
+		}catch (e:Exception){
+			e.printStackTrace()
+			Log.e("PeopleListFragment","In other tab.")
+		}
+
 	}
 
 	/**

@@ -38,7 +38,7 @@
                 tools:ignore="LabelFor,RtlSymmetry"
                 android:textSize="14sp"
                 android:background="@android:color/transparent"
-
+                android:maxLength="20"
                 />
 
             <LinearLayout

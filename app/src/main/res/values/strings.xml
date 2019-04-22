@@ -12,4 +12,5 @@
     <string name="error_getting_people">Error obteniendo las personas, intente nuevamente.</string>
     <string name="no_filter_result">No fueron encontradas personas con ese nombre, intente nuevamente</string>
     <string name="clear_search_bar">Para habilitar el scroll infinito, elimine el contenido del buscador.</string>
+    <string name="unexpected_error">Error inesperado, revise su coneccion a internet y pruebe nuevamente.</string>
 </resources>
