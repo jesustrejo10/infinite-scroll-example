@@ -7,5 +7,5 @@ It was developed using MVP architecture.</br>
 It was developed using Command or Use case Pattern, Each class can be a requirement.</br>
 Also contains a search bar to filter the result than are saved in the phone.</br>
 
-Thanks to www.flaticon.com
-Jesus Trejo.
+Thanks to www.flaticon.com </br>
+<b> Jesus Trejo, 2019.</b>
