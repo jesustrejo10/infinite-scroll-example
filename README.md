@@ -1,5 +1,5 @@
 # infinite-scroll-example
-This project is an example of an implementation of infinite scroll integrated with a API using Retrofit.
+This project is an example of an implementation of infinite scroll integrated with a API using Retrofit. </br>
 It contains a Swipe layout to manage the "swipe to refresh" in the main screen.
 It contains a Tab layout integrated with view pager to handle the Tab menu, also constains custom tabs.
 It was developed using MVP architecture.
