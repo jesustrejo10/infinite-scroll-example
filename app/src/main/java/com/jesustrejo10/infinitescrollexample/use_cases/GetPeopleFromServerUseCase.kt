@@ -1,6 +1,5 @@
 package com.jesustrejo10.infinitescrollexample.use_cases
 
-import android.app.Person
 import com.jesustrejo10.infinitescrollexample.data.RetroBase
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +18,7 @@ class GetPeopleFromServerUseCase(private val page : String,
 			.observeOn(schedulers)
 			.subscribe(
 				{ result -> aboveLayer.manageResponse(result.people) },
-				{ error -> aboveLayer.manageError() }
+				{ _ -> aboveLayer.manageError() }
 			)
 	}
 
