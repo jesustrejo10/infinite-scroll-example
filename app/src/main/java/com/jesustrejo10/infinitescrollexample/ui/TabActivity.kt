@@ -1,12 +1,17 @@
 package com.jesustrejo10.infinitescrollexample.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.ImageViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import com.jesustrejo10.infinitescrollexample.R
 import kotlinx.android.synthetic.main.activity_tab.*
 import kotlinx.android.synthetic.main.fragment_tab.view.*
@@ -55,6 +60,7 @@ class TabActivity : AppCompatActivity() {
 			TabLayout.OnTabSelectedListener {
 			override fun onTabSelected(tab: TabLayout.Tab) {
 				container.currentItem = tab.position
+				activateTab(tab.position, tabLayout)
 
 			}
 
@@ -67,8 +73,61 @@ class TabActivity : AppCompatActivity() {
 			}
 
 		})
+	}
 
-		tabLayout.getTabAt(0)!!.setIcon(R.drawable.home)
+	private fun activateTab(position: Int, tabLayout: TabLayout?) {
+		if(tabLayout!= null){
+			when (position){
+				0->{
+					inactivateTabOption(1,tabLayout)
+					inactivateTabOption(2,tabLayout)
+					inactivateTabOption(3,tabLayout)
+					activateTabOption(0,tabLayout)
+				}
+
+				1 -> {
+					inactivateTabOption(0,tabLayout)
+					inactivateTabOption(2,tabLayout)
+					inactivateTabOption(3,tabLayout)
+					activateTabOption(1,tabLayout)
+				}
+
+				2-> {
+					inactivateTabOption(0,tabLayout)
+					inactivateTabOption(1,tabLayout)
+					inactivateTabOption(3,tabLayout)
+					activateTabOption(2,tabLayout)
+				}
+
+				3-> {
+					inactivateTabOption(0,tabLayout)
+					inactivateTabOption(1,tabLayout)
+					inactivateTabOption(2,tabLayout)
+					activateTabOption(3,tabLayout)
+				}
+			}
+
+		}
+	}
+
+	private fun inactivateTabOption(position: Int, tabLayout: TabLayout?){
+		val tab = tabLayout!!.getTabAt(position)
+		val view = tab!!.customView
+		val icon = view!!.findViewById<ImageView>(R.id.tabIcon)
+		ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.small_text_color)))
+
+		val text = view.findViewById<TextView>(R.id.tabText)
+		text.setTextColor(ContextCompat.getColor(this, R.color.small_text_color))
+	}
+
+	private fun activateTabOption(position: Int, tabLayout: TabLayout?){
+		val tab = tabLayout!!.getTabAt(position)
+		val view = tab!!.customView
+		val icon = view!!.findViewById<ImageView>(R.id.tabIcon)
+
+		ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.active_menu)))
+		val text = view.findViewById<TextView>(R.id.tabText)
+		text.setTextColor(ContextCompat.getColor(this, R.color.active_menu))
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
